@@ -1,0 +1,100 @@
+PUT sesardb_2
+{
+  "settings": {
+    "number_of_shards": 1,
+    "analysis": {
+      "analyzer": {
+          "default": {
+          "tokenizer": "standard",
+          "filter": ["standard", "lowercase", "english_stemmer"]
+        },
+        "token_analyzer": {
+          "tokenizer": "ecpath_tokenizer"
+        }
+      },
+      "tokenizer": {
+        "ecpath_tokenizer": {
+          "type": "path_hierarchy",
+          "delimiter": "|"
+        }
+      },
+      "filter": {
+        "english_stemmer": {
+           "type": "stemmer",
+           "name": "english"
+        }
+      }
+    }
+
+  },
+    "mappings": {
+          "sample": {
+            "properties": {
+              "classification_category": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "classification_hierarchy": {
+            "type": "text",
+            "analyzer": "token_analyzer",
+            "fielddata": true
+          },
+              "location":{
+                  "type" : "geo_point"
+              },
+              "sample_type_category":{
+                "type":"text",
+                  "fields": {
+                  "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                  }
+                }
+              },
+              "sample_type_hierarchy": {
+            "type": "text",
+            "analyzer": "token_analyzer",
+            "fielddata": true
+          },
+              "parents": {
+                "properties": {
+                  "samples": {
+                    "properties": {
+                      "sample": {
+                        "type":"nested"
+                      }
+                    }
+                  }
+                }
+              },
+              "children": {
+                "properties": {
+                  "samples": {
+                    "properties": {
+                      "sample": {
+                        "type":"nested"
+                      }
+                    }
+                  }
+                }
+              },
+              "siblings": {
+                "properties": {
+                  "samples": {
+                    "properties": {
+                      "sample": {
+                        "type":"nested"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+    }
+}
