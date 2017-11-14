@@ -1,4 +1,4 @@
-PUT sesardb_2
+curl -XPUT "http://stats-dev.ldeo.columbia.edu:9200/sesardb_2" -H 'Content-Type: application/json' -d'
 {
   "settings": {
     "number_of_shards": 1,
@@ -15,7 +15,7 @@ PUT sesardb_2
       "tokenizer": {
         "ecpath_tokenizer": {
           "type": "path_hierarchy",
-          "delimiter": "|"
+          "delimiter": ">"
         }
       },
       "filter": {
@@ -25,7 +25,6 @@ PUT sesardb_2
         }
       }
     }
-
   },
     "mappings": {
           "sample": {
@@ -63,38 +62,26 @@ PUT sesardb_2
           },
               "parents": {
                 "properties": {
-                  "samples": {
-                    "properties": {
-                      "sample": {
+                  "sample": {
                         "type":"nested"
                       }
-                    }
                   }
-                }
-              },
+                },
               "children": {
                 "properties": {
-                  "samples": {
-                    "properties": {
                       "sample": {
                         "type":"nested"
                       }
-                    }
                   }
-                }
-              },
+                },
               "siblings": {
                 "properties": {
-                  "samples": {
-                    "properties": {
                       "sample": {
                         "type":"nested"
                       }
                     }
-                  }
                 }
               }
             }
           }
-    }
-}
+}'
